@@ -59,7 +59,7 @@ TIME=$(basename $i | cut -d'_' -f6 | cut -c10-15)
 ID=$(basename $i | cut -d'_' -f10 | cut -d'.' -f1)
 echo "$i,$SAT,$MODE,$TYPE,$POL,$DATE_TIME,$DATE,$TIME,$ID" >> $REPORT
 done
-
+NIMAGES=$(cat $REPORT | wc -l)
 if [ $(cat $REPORT | wc -l) == 0 ]; then                                         # Check that at least one image is found
     echo "No images found, please make sure that the"
     echo "directory contains at least one SLC image"
@@ -69,7 +69,7 @@ fi
 sort --field-separator=',' --key=6 $REPORT -o $REPORT                             # sort file list by time and date and save in the same file
 echo "The following files has been found:"
 awk -F',' '{print $1}' $REPORT
-echo "Found $(cat $REPORT | wc -l) Sentinel-1 files in the input directory"
+echo "Found $NIMAGES Sentinel-1 files in the input directory"
 read -n1 -r -p "Press any key to continue..." key
 
 #############################
@@ -100,6 +100,7 @@ fi
 ########################
 if [ $N_IMAGES == 1 ]; then
     FILE=$(echo $i | awk -F',' '{print $1}')
+	echo "Processing image $(echo $totalsi+1 | bc) of $NIMAGES"
     echo "One image found for $DATE"
     echo "Ouput folder: $CPTDIR"
     mkdir $CPTDIR
@@ -111,6 +112,7 @@ echo "-------------------------------------------------------------------------"
 #MULTIPLE IMAGES FOUND #
 ########################
 else
+	echo "Processing images $(echo $totalsi+1 | bc) to $(echo $totalsi+$N_IMAGES | bc) of the total $NIMAGES images"
     echo "$DATE appears to have more than one slices"
     MSLICES+=($DATE)
     counter=1
@@ -132,7 +134,7 @@ fi
 done
 
 echo "A total of $totalsi SLC images has been processed"
-if [ $totalsi == $(cat $REPORT | wc -l ) ]; then
+if [ $totalsi == $(cat $REPORT | wc -l) ]; then
     echo "All images has been processed"
 else
     echo "Some images has been not processed, please check"
