@@ -7,13 +7,16 @@
 # Joaquin Escayo @ 2017 j.escayo@csic.es
 # CC LICENSE: Attribution-NonCommercial-ShareAlike 4.0 International
 
+# v1.0 - Initial version
+# v1.1 - Fixed name detection, now parses the name of the file correctly.
+
 # ----------------------- CODE START --------------------------------
 
 LC_ALL=C                                                        # to get the locales right. Decimal separator as point.
 DEBUG=0                                                         # Debug 0 to don't show debug messages, any other value will show debugging messages.
 results_file=$1
 incidende_file=$2
-output_file=$(basename $results_file | cut -d'.' -f1)_inc.csv
+output_file=$(basename $results_file | sed 's/\.csv//g' )_inc.csv
 AZ_ml=$(echo $3 | cut -d'x' -f1)
 RG_ml=$(echo $3 | cut -d'x' -f2)
 
