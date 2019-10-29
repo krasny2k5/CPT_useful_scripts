@@ -23,7 +23,7 @@ mv $2/*SAFE/* $2/
 }
 sentinel_unzip_pol () {                                                                # Function to decompress Sentinel Image, uses 3 arguments (input file, output folder and pol channel in that order)
 if [[ -z $1 ]] || [[ -z $2 ]] || [[ -z $3 ]]; then echo "You must specify file, output folder and pol channel"; exit; fi
-unzip -d $2 $1 S1*/support/* S1*/preview/* S1*/measurement/*$3* S1*/annotation/*$3* S1*/S1A_* S1*/manifest.safe &> $2/unzip.log
+unzip -d $2 $1 S1*/support/* S1*/preview/* S1*/measurement/*$3* S1*/annotation/*$3* S1*/S1* S1*/manifest.safe &> $2/unzip.log
 mv $2/*SAFE/* $2/
 }
 lowercase () {
